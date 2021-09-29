@@ -11,3 +11,25 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.banner-img {
+  z-index: 0;
+  filter: brightness(50%);
+}
+.banner-text {
+
+  font-size: 1.5em !important;
+  z-index:1;
+  position: absolute;
+  top: 30px;
+  left: 300px;
+  max-width: 600px;
+}
+.font-50 {
+  font-size: 1.9em;
+}
+.font-10 {
+  font-size: 1.5em;
+}
+.color-white {
+  color: white;
+}
