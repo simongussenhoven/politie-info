@@ -6,28 +6,21 @@ import Loading from './Loading'
 
 
 function App() {
-  const [isLoading, setLoading] = useState(true)
-  const [apb, setApb ] = useState([])
-  useEffect(() => {
-    fetch(
-      'https://api.politie.nl/v4/gezocht/gezochtepersonen?language=nl&radius=5.0&maxnumberofitems=10&offset=0',
-      {
-        method: "get",
-        "Access-Control-Allow-Origin": "*",
-        headers: {
-          'Content-Type': 'application/json'
-        }, 
-      }
-    )
-  .then(res => console.log(res))
-
-    .catch (error => console.log(error));
-  },[]);
+  const [info, setInfo ] = useState("No info selected")
+  
+  const handler = () =>
+  fetch("/.netlify/functions/police-general", { headers: { accept: "Accept: application/json" } })
+    .then(x => x.json())
+    .then(data => setInfo(data))
+    .catch(error => console.log(error))
+    .then(console.log(info))
   return (
     <div className="App">
       <Header/>
-      <SubMenu/>
-      {isLoading ? <p>Loading</p> : <p>Loaded</p>}
+      <div className="container">
+        <button onClick={handler}>Click me</button>
+        <p></p>
+      </div>
     </div>
   );
 }
