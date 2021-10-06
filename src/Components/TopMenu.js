@@ -2,10 +2,10 @@ import {Navbar, NavDropdown, Container, Nav} from "react-bootstrap"
 import {NavLink} from "react-bootstrap"
 export default function TopMenu () {
     return(
-        <section className="nav" expand="lg">
+        <section className="d-flex justify-content-center" expand="lg" id="topmenu">
             <Navbar>
-                <Container>
-                <Navbar.Brand href="#home">Something</Navbar.Brand>
+                <Container className="d-flex w-100">
+                <Navbar.Brand href="#home">Nieuwsberichten</Navbar.Brand>
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
                     <Nav.Link href="#features">Features</Nav.Link>

@@ -1,15 +1,16 @@
 import {Button} from "react-bootstrap"
+import Background from '../images/politie2.jpg'
+import AnchorLink from 'react-anchor-link-smooth-scroll'
+
 export default function Header () {
     return (
-        <section className="banner">
-            <img className="banner-img w-100 z-0" src="../images/politie.jpg" alt="zwaailichten"/>
-            <div className="row banner-text py-5 px-4 rounded">
-                <h1 className="font-50 text-bold text-light">🚨 Politie Info </h1>
-                <h2 className="font-10 text-light">Politie.nl open data via REST API</h2>
-                <p className="text-light">Op deze pagina vind je allerlei vrij beschikbare informatie via api.politie.nl. Meer informatie over deze API vind je <a target="_blank" className="underline color-white" href="https://www.politie.nl/algemeen/open-data.html">hier</a>.</p>
-                
-           </div>
-           
-      </section>
+        <header className="jumbotron jumbotron-fluid text-light" style={{backgroundImage: "url(" + Background + ")"}}>
+            <div className="container p-5">
+                <h1 className="display-1">Politie info</h1>
+                <h2>Een React app met data representatie van api.politie.nl</h2>
+                <AnchorLink href='#topmenu'><Button className="my-3 mx-1">Bekijk info</Button></AnchorLink>
+                <a target="_blank"href="https://www.politie.nl/algemeen/open-data.html"><Button variant="outline-secondary" className="my-3">Over de API</Button></a>
+            </div>
+        </header>
     )
 }

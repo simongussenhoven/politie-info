@@ -2,8 +2,7 @@ const fetch = require('node-fetch')
 
 const handler = async function () {
   try {
-    const response = await fetch('https://api.politie.nl/v4/gezocht?language=nl&lat=53.1511173&lon=6.756634599999984&radius=5.0&maxnumberofitems=10&offset=0',
-    { method:'GET',
+    const response = await fetch('https://api.politie.nl/v4/nieuws?language=nl&query=drie%20personen&radius=5.0&maxnumberofitems=10&offset=0', {
       headers: { Accept: 'application/json' },
     })
     if (!response.ok) {
@@ -14,7 +13,7 @@ const handler = async function () {
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ msg: data.joke }),
+      body: JSON.stringify({ data }),
     }
   } catch (error) {
     // output to netlify function log
