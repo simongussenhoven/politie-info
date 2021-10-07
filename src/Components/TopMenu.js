@@ -6,7 +6,7 @@ export default function TopMenu () {
             <Navbar>
                 <Container className="d-flex w-100">
                 <Navbar.Brand href="#home">Nieuwsberichten</Navbar.Brand>
-                <Navbar.Collapse id="responsive-navbar-nav">
+                {/* <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
                     <Nav.Link href="#features">Features</Nav.Link>
                     <Nav.Link href="#pricing">Pricing</Nav.Link>
@@ -24,9 +24,9 @@ export default function TopMenu () {
                         Dank memes
                     </Nav.Link>
                     </Nav>
-                </Navbar.Collapse>
+                </Navbar.Collapse> */}
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                <NavLink>Hello</NavLink>
+                <NavLink>Over deze site</NavLink>
                 </Container>
             </Navbar>
         </section>

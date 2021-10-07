@@ -9,7 +9,7 @@ export default function Header () {
                 <h1 className="display-1">Politie info</h1>
                 <h2>Een React app met data representatie van api.politie.nl</h2>
                 <AnchorLink href='#topmenu'><Button className="my-3 mx-1">Bekijk info</Button></AnchorLink>
-                <a target="_blank"href="https://www.politie.nl/algemeen/open-data.html"><Button variant="outline-secondary" className="my-3">Over de API</Button></a>
+                <a target="_blank" rel="noreferrer" href="https://www.politie.nl/algemeen/open-data.html"><Button variant="outline-secondary" className="my-3">Over de API</Button></a>
             </div>
         </header>
     )

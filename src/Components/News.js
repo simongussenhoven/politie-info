@@ -1,35 +1,37 @@
 import Loading from './Loading'
-import Placeholder from '../images/card-placeholder.png'
+import placeholder from '../images/politie-placeholder.png'
 export default function News(props) {
-    {
+    
         if (!props.isLoading) {
             return (
-                <section id="news" className="container vh-100">
-                    <div className="cardgroup d-flex flex-column py-4">
-                        {props.news.map(item => {
-                            return(
-                                <div class="card col-12 col-md-3 my-1 w-100">
-                                    <img class="card-img-top" src="..." alt="Card image cap"/>
-                                    <div class="card-body">
-                                        <h5 class="card-title">{item.titel}</h5>
-                                        {item.alineas.map(alinea => {
-                                            return (
-                                                <div dangerouslySetInnerHTML={{ __html: alinea.opgemaaktetekst }} />
-                                            )
-                                        })}
-                                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                <div className="container">
+                    <form className="d-flex justify-content-center my-3" onSubmit={props.handleSearch}>
+                        <input type="text" className="rounded" placeholder="Voer een zoekterm in" name="search" id="search"/>
+                        <input type="submit" value="Zoeken" className="mx-2"/>
+                    </form>
+                    <section id="news">
+                        <div className="cardgroup d-flex justify-content-center flex-row py-4 flex-wrap">
+                            {props.news.map(item => {
+                                return(
+                                    <div className="card col-3 col-md-2 col-lg-2 my-1 mx-1 shadow d-flex flex-column">
+                                        <img style={{'height': '100px'}, {'object-fit':'cover'}} style={{'height': '100px'},{'objectFit': 'contain'}} className="card-img-top w-100" src={item.afbeelding.url !== "" ? item.afbeelding.url : placeholder } alt={item.uid}/>
+                                        <div className="card-body mb-auto">
+                                            <span className="w-100"><small>{item.gebied}</small></span><br/>
+                                            <span className="card-title"><small>{item.publicatiedatum}</small></span><br/>
+                                            <span className="w-100" >{item.titel}</span>
+                                            
+                                            
+                                        </div>
+                                        <a href={item.url} className="btn btn-primary m-2" target="_blank" rel="noreferrer">Lees meer</a>
                                     </div>
-                                </div>
-                            )
-                        })}
-                    </div>
-                </section>
+                                )
+                            })}
+                        </div>
+                    </section>
+                </div>
             )
         }
-        else {
-            return (
-                <Loading />
-            )
+        else {return (<Loading />)
         }
-    }
+    
 }

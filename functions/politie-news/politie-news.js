@@ -1,8 +1,10 @@
 const fetch = require('node-fetch')
 
-const handler = async function () {
+const handler = async function (event) {
+  const query = event.queryStringParameters.query;
+  console.log(query)
   try {
-    const response = await fetch('https://api.politie.nl/v4/nieuws?language=nl&query=drie%20personen&radius=5.0&maxnumberofitems=10&offset=0', {
+    const response = await fetch(`https://api.politie.nl/v4/nieuws?language=nl&query=${query}&radius=5.0&maxnumberofitems=25&offset=0`, {
       headers: { Accept: 'application/json' },
     })
     if (!response.ok) {
