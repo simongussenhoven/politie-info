@@ -6,6 +6,8 @@
 }
 
 .news-image {
-  height: 100px;
+  height: 150px !important;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 /*# sourceMappingURL=index.css.map */

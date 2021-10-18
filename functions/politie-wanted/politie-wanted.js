@@ -1,16 +1,10 @@
 const fetch = require('node-fetch')
 
 const handler = async function (event) {
-  const query = event.queryStringParameters.query;
-  const fromdate = event.queryStringParameters.fromdate;
-  const todate = event.queryStringParameters.todate;
-
-  console.log(`Fromdate: ${fromdate}`)
-  console.log(`Todate: ${todate}`)
-  console.log("Api called!")
-  console.log(query)
+  // const query = event.queryStringParameters.query;
+  // console.log(query)
   try {
-  const response = await fetch(`https://api.politie.nl/v4/nieuws?language=nl&query=${query}&radius=5.0&maxnumberofitems=25&offset=0&fromdate=${fromdate}&todate=${todate}`, {
+    const response = await fetch(`https://api.politie.nl/v4/gezocht?language=nl&maxnumberofitems=10&offset=0`, {
       headers: { Accept: 'application/json' },
     })
     if (!response.ok) {
@@ -29,7 +23,7 @@ const handler = async function (event) {
     return {
       statusCode: 500,
       // Could be a custom message or object i.e. JSON.stringify(err)
-      body: JSON.stringify({ msg: error.message })
+      body: JSON.stringify({ msg: error.message }),
     }
   }
 }
