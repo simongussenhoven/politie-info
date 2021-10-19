@@ -52,7 +52,7 @@ export default function News() {
             }
         }
 
-        //rerender the page when any of the mentioned state values are changed.
+        //rerender the page when any of the state values are changed
         useEffect(() => {
             const getNews = () => {    
                 setLoading(true)
@@ -72,10 +72,6 @@ export default function News() {
                         <input type="text" className="rounded mx-1 my-1" placeholder="Voer een zoekterm in" name="search" id="search"/>
                         <input type="date" className="rounded mx-1 my-1" name="fromdate" max={toDate} value={fromDate} onChange={(e) => {changeDate(e, "from")}}/>
                         <input type="date" className="rounded mx-1 my-1" name="todatedate" min={fromDate} value={toDate} max={formatDate(today)} onChange={(e) => {changeDate(e, "to")}}/>
-                        <select onChange={sortItems} className="rounded mx-1 my-1">
-                            <option value="up">Newest first</option>
-                            <option value="down">Oldest first</option>
-                        </select>
                         <input type="submit" value="Zoeken" className="mx-1 my-1"/>
                     </form>
                     <section id="news">
