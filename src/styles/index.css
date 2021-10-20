@@ -10,4 +10,13 @@
   -o-object-fit: cover;
      object-fit: cover;
 }
+
+.pagenav {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.pagenav:hover {
+  text-decoration: none;
+}
 /*# sourceMappingURL=index.css.map */

@@ -1,12 +1,13 @@
 import {Navbar, NavDropdown, Container, Nav} from "react-bootstrap"
+import {Link} from 'react-router-dom'
 import {NavLink} from "react-bootstrap"
 export default function TopMenu () {
     return(
         <section className="d-flex justify-content-center" expand="lg" id="topmenu">
             <Navbar>
                 <Container className="d-flex w-100">
-                <Navbar.Brand href="#home">Nieuwsberichten</Navbar.Brand>
-                {/* <Navbar.Collapse id="responsive-navbar-nav">
+                {/*<Navbar.Brand as={Link} to="/">Home</Navbar.Brand>
+                    <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
                     <Nav.Link href="#features">Features</Nav.Link>
                     <Nav.Link href="#pricing">Pricing</Nav.Link>
@@ -26,7 +27,8 @@ export default function TopMenu () {
                     </Nav>
                 </Navbar.Collapse> */}
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                <NavLink>Over deze site</NavLink>
+                <NavLink as={Link} to="/">Home</NavLink>
+                <NavLink as={Link} to="/gezochte-personen/">Gezochte personen</NavLink>
                 </Container>
             </Navbar>
         </section>

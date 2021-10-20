@@ -1,10 +1,9 @@
 const fetch = require('node-fetch')
 
 const handler = async function (event) {
-  // const query = event.queryStringParameters.query;
-  // console.log(query)
+  const query = event.queryStringParameters.query;
   try {
-    const response = await fetch(`https://api.politie.nl/v4/gezocht?language=nl&maxnumberofitems=10&offset=0`, {
+  const response = await fetch(`https://api.politie.nl/v4/gezocht?language=nl&lat=53.1511173&lon=6.756634599999984&radius=5.0&maxnumberofitems=10&offset=0`, {
       headers: { Accept: 'application/json' },
     })
     if (!response.ok) {
@@ -23,7 +22,7 @@ const handler = async function (event) {
     return {
       statusCode: 500,
       // Could be a custom message or object i.e. JSON.stringify(err)
-      body: JSON.stringify({ msg: error.message }),
+      body: JSON.stringify({ msg: error.message })
     }
   }
 }

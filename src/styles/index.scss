@@ -8,3 +8,10 @@
     height: 150px !important;
     object-fit:cover
   }
+  .pagenav {
+    text-decoration: underline;
+    cursor: pointer;
+    &:hover {
+      text-decoration: none
+    }
+  }
