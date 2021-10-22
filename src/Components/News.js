@@ -74,7 +74,7 @@ export default function News() {
             return news.map(item => {
                 return (
                     <div className="card col-12 col-md-2 col-lg-2 my-1 mx-md-2 shadow d-flex flex-column" key={item.uid}>
-                        <img className="card-img-top w-100 news-image" src={item.afbeelding.url !== "" ? item.afbeelding.url : placeholder} alt={item.uid} />
+                        <img onClick={() => { handleShow(item) }} className="card-img-top w-100 news-image" src={item.afbeelding.url !== "" ? item.afbeelding.url : placeholder} alt={item.uid} />
                         <div className="card-body mb-auto">
                             <span className="w-100"><small><strong>{item.gebied}</strong></small></span><br />
                             <span className="card-title"><small>{item.publicatiedatum}</small></span><br />
@@ -124,7 +124,7 @@ export default function News() {
                     dialogClassName="width-90"
                     aria-labelledby="example-custom-modal-styling-title"
                     animation="true"
-                    backdrop="true"
+
                     scrollable="true"
                 >
 
