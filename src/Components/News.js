@@ -1,6 +1,7 @@
 import Loading from './Loading'
 import placeholder from '../images/politie-placeholder.png'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, createRef } from 'react'
+import { Modal, Button, ModalDialog } from 'react-bootstrap'
 
 export default function News() {
 
@@ -19,6 +20,20 @@ export default function News() {
     const [maxNumberofItems, setMaxNumberofItems] = useState([10])
     const [page, setPage] = useState(0)
     const [last, setLast] = useState(false)
+    const [show, setShow] = useState(false);
+    const [modalData, setModalData] = useState({
+        titel: "Placeholder",
+        alineas: [
+            {"opgemaaktetekst": "Placeholder"}
+        ]
+    })
+
+    //showing and hiding the modal
+    const handleClose = () => setShow(false);
+    const handleShow = (item) => {
+        setModalData(item)
+        setShow(true)
+    }
 
     //set state when handling search
     const handleSearch = (event) => {
@@ -50,7 +65,8 @@ export default function News() {
         }
         setPage(newPage)
     }
-
+    //dom parser since this api delivers formatted HTML
+    const parser = new DOMParser()
     //use function to generate items, depending on the length of the array of newsitems. Otherwise, show an error
     const generateItems = () => {
         if (news.length !== 0) {
@@ -63,7 +79,7 @@ export default function News() {
                             <span className="card-title"><small>{item.publicatiedatum}</small></span><br />
                             <span className="w-100" >{item.titel}</span>
                         </div>
-                        <a href={item.url} className="btn btn-primary m-2" target="_blank" rel="noreferrer">Lees meer</a>
+                        <button onClick={() => { handleShow(item) }} className="btn btn-primary m-2" target="_blank" rel="noreferrer">Lees meer</button>
                     </div>
                 )
             })
@@ -73,6 +89,7 @@ export default function News() {
             return <h2>No items found</h2>
         }
     }
+    //
 
     //rerender the page when any of the state values are changed
     useEffect(() => {
@@ -81,9 +98,10 @@ export default function News() {
             fetch(`/.netlify/functions/politie-news?query=${query}&fromdate=${fromDate.replace(/-/g, "")}&todate=${toDate.replace(/-/g, "")}&maxnumberofitems=${maxNumberofItems}&offset=${maxNumberofItems * page}`)
                 .then((x) => x.json())
                 .then(result => {
-                    if(result.data !== undefined){
-                        setNews([...result.data.nieuwsberichten])
-                        result.data.iterator.last ? setLast(true) : setLast(false)
+                    if (result.data !== undefined) {
+                        setNews([...result.data.nieuwsberichten]);
+                        setModalData(result.data.nieuwsberichten[0])
+                        result.data.iterator.last ? setLast(true) : setLast(false);
                     }
                     else {
                         setNews([])
@@ -96,40 +114,63 @@ export default function News() {
 
     if (!isLoading) {
         return (
-            <div className="container mb-5">
+            <>
+                {/*Modal for news items}*/}
+                <Modal
+                    show={show}
+                    onHide={() => setShow(false)}
+                    dialogClassName="width-90"
+                    aria-labelledby="example-custom-modal-styling-title"
+                    animation="true"
+                    backdrop="true"
+                    scrollable="true"
+                >
 
-                {/* Search bar with options */}
-                <form className="d-flex flex-column flex-md-row justify-content-center my-3" onSubmit={handleSearch}>
-                    {isLoading ? <span>Loading</span> : ""}
-                    <input type="text" className="rounded mx-1 my-1" placeholder="Voer een zoekterm in" name="search" id="search" />
-                    <input type="date" className="rounded mx-1 my-1" name="fromdate" max={toDate} value={fromDate} onChange={(e) => { changeDate(e, "from") }} />
-                    <input type="date" className="rounded mx-1 my-1" name="todatedate" min={fromDate} value={toDate} max={formatDate(today)} onChange={(e) => { changeDate(e, "to") }} />
-                    <select value={maxNumberofItems} className="mx-1 my-1" onChange={handleMaxNum}>
-                        <option value="10">10 berichten</option>
-                        <option value="25">25 berichten</option>
-                    </select>
-                    <input type="submit" value="Zoeken" className="mx-1 my-1" />
-                </form>
+                    <Modal.Header closeButton>
+                        <Modal.Title id="example-custom-modal-styling-title">
+                            {modalData.titel}
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
 
-                {/* Page title */}
-                <section className="text-center">
-                    <h2 className="mx-5 px-5 pt-3">Nieuwsberichten voor zoekterm "{query}"</h2>
-                    <p className="mx-5 px-5">Van {fromDate.split("-").reverse().join("-")} tot {toDate.split("-").reverse().join("-")}</p>
-                </section>
+                    </Modal.Body>
+                </Modal>
+                <div className="container mb-5">
 
-                {/* Page navigation */}
-                <section className="text-center">
-                    {console.log(news)}
-                    <p>{page > 0 ? <span className="pagenav" onClick={() => handlePage(0)}>Vorige pagina</span> : ""} <span> {page > 0 && last === false ? <span>|</span> : ""} </span>{last ? "" : <span className="pagenav" onClick={() => handlePage(1)}>Volgende pagina</span>}</p>
-                </section>
+                    {/* Search bar with options */}
+                    <form className="d-flex flex-column flex-md-row justify-content-center my-3" onSubmit={handleSearch}>
+                        {isLoading ? <span>Loading</span> : ""}
+                        <input type="text" className="rounded mx-1 my-1" placeholder="Voer een zoekterm in" name="search" id="search" />
+                        <input type="date" className="rounded mx-1 my-1" name="fromdate" max={toDate} value={fromDate} onChange={(e) => { changeDate(e, "from") }} />
+                        <input type="date" className="rounded mx-1 my-1" name="todatedate" min={fromDate} value={toDate} max={formatDate(today)} onChange={(e) => { changeDate(e, "to") }} />
+                        <select value={maxNumberofItems} className="mx-1 my-1" onChange={handleMaxNum}>
+                            <option value="10">10 berichten</option>
+                            <option value="25">25 berichten</option>
+                        </select>
+                        <input type="submit" value="Zoeken" className="mx-1 my-1" />
+                    </form>
 
-                {/*Field for rendering items */}
-                <section id="news">
-                    <div className="cardgroup d-flex justify-content-center flex-row py-4 flex-wrap">
-                        {generateItems()}
-                    </div>
-                </section>
-            </div>
+                    {/* Page title */}
+                    <section className="text-center">
+                        <h2 className="mx-5 px-5 pt-3">Nieuwsberichten voor zoekterm "{query}"</h2>
+                        <p className="mx-5 px-5">Van {fromDate.split("-").reverse().join("-")} tot {toDate.split("-").reverse().join("-")}</p>
+                    </section>
+
+                    {/* Page navigation */}
+                    <section className="text-center">
+                        <p>{page > 0 ? <span className="pagenav" onClick={() => handlePage(0)}>Vorige pagina</span> : ""} <span> {page > 0 && last === false ? <span>|</span> : ""} </span>{last ? "" : <span className="pagenav" onClick={() => handlePage(1)}>Volgende pagina</span>}</p>
+                    </section>
+
+                    {/*Field for rendering items */}
+                    <section id="news">
+                        <div className="cardgroup d-flex justify-content-center flex-row py-4 flex-wrap">
+                            {generateItems()}
+                        </div>
+                    </section>
+
+
+                </div>
+            </>
         )
     }
     else {

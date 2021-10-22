@@ -8,7 +8,7 @@ const handler = async function (event) {
   const radius = params.radius
   const max = params.max
   const offset = params.offset
-
+  console.log(offset)
   try {
   const response = await fetch(`https://api.politie.nl/v4/gezocht?language=nl&lat=${lat}&lon=${lon}&radius=${radius}&maxnumberofitems=${max}&offset=${offset}`, {
       headers: { Accept: 'application/json' },
@@ -25,7 +25,7 @@ const handler = async function (event) {
     }
   } catch (error) {
     // output to netlify function log
-
+    console.log(error)
     return {
       statusCode: 500,
       // Could be a custom message or object i.e. JSON.stringify(err)

@@ -19,4 +19,8 @@
 .pagenav:hover {
   text-decoration: none;
 }
+
+.width-90 {
+  width: 90% !important;
+}
 /*# sourceMappingURL=index.css.map */

@@ -12,8 +12,8 @@ export default function Wanted() {
     const [lat, setLat] = useState("52.3667")
     const [lng, setLng] = useState("4.8833")
     const [radius, setRadius] = useState("10.0")
-    const [max, setMax] = useState("10")
-    const [page, setPage] = useState("0")
+    const [max, setMax] = useState(10)
+    const [page, setPage] = useState(0)
     const [last, setLast] = useState(false)
 
     //handler for the submitfield in the form
@@ -40,6 +40,12 @@ export default function Wanted() {
             newPage -= 1
         }
         setPage(newPage)
+    }
+
+    //handler for number of pages
+    const handleMax = (e) => {
+        setRadius(e.target.value)
+        setPage(0)
     }
 
     //handler for the city selector
@@ -76,10 +82,21 @@ export default function Wanted() {
         }
     }
 
+    //generate pagination
+    const getPagination = () => {
+        if (wanted.length > 0){
+            return(
+                <section className="text-center">
+                    <p>{page > 0 ? <span className="pagenav" onClick={() => handlePage(0)}>Vorige pagina</span> : ""} <span> {page > 0 && last === false ? <span>|</span> : ""} </span>{last ? "" : <span className="pagenav" onClick={() => handlePage(1)}>Volgende pagina</span>}</p>
+                </section> 
+            )
+        }
+    }
+
     //call api when state values change, defined in callback
     useEffect(() => {
         const getWanted = () => {
-            fetch(`/.netlify/functions/politie-wanted?query=${query}&lat=${lat}&lon=${lng}&radius=${radius}&max=${max}&offset=${max * page}`)
+            fetch(`/.netlify/functions/politie-wanted?query=${query}&lat=${lat}&lon=${lng}&radius=${radius}&max=${max}&offset=${max*page}`)
                 .then((x) => x.json())
                 .then(result => {
                     if (result.data !== undefined) {
@@ -92,7 +109,7 @@ export default function Wanted() {
                 })
         }
         getWanted()
-    }, [lat, radius, query, page])
+    }, [lat, radius, query, page, max])
 
     return (
         <div className="container">
@@ -114,7 +131,7 @@ export default function Wanted() {
                         <option value="10.0">10km</option>
                         <option value="25.0">25km</option>
                     </select>
-                    <select value={max} onChange={setMax}>
+                    <select value={max} onChange={handleMax}>
                         <option value="10">10 berichten</option>
                         <option value="25">25 berichten</option>
                     </select>
@@ -123,9 +140,7 @@ export default function Wanted() {
             </section>
 
             {/*Page selector*/}
-            <section className="text-center">
-                <p>{page > 0 ? <span className="pagenav" onClick={() => handlePage(0)}>Vorige pagina</span> : ""} <span> {page > 0 && last === false ? <span>|</span> : ""} </span>{last ? "" : <span className="pagenav" onClick={() => handlePage(1)}>Volgende pagina</span>}</p>
-            </section>
+            {getPagination()}
 
             {/*Render content*/}
             <section id="news">
@@ -134,6 +149,9 @@ export default function Wanted() {
                     {generateData()}
                 </div>
             </section>
+
+            {/*Page selector*/}
+            {getPagination()}
         </div>
     )
 }
