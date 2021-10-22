@@ -67,6 +67,7 @@ export default function News() {
     }
     //dom parser since this api delivers formatted HTML
     const parser = new DOMParser()
+
     //use function to generate items, depending on the length of the array of newsitems. Otherwise, show an error
     const generateItems = () => {
         if (news.length !== 0) {
@@ -118,6 +119,7 @@ export default function News() {
                 {/*Modal for news items}*/}
                 <Modal
                     show={show}
+                    size="lg"
                     onHide={() => setShow(false)}
                     dialogClassName="width-90"
                     aria-labelledby="example-custom-modal-styling-title"
@@ -132,7 +134,11 @@ export default function News() {
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-
+                        {modalData.alineas.map(item => {
+                           return(
+                            <div dangerouslySetInnerHTML={{__html: item.opgemaaktetekst}} />
+                           )
+                        })}
                     </Modal.Body>
                 </Modal>
                 <div className="container mb-5">
