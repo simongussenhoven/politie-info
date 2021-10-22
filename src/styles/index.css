@@ -6,7 +6,7 @@
 }
 
 .news-image {
-  height: 150px !important;
+  height: 200px !important;
   -o-object-fit: cover;
      object-fit: cover;
 }

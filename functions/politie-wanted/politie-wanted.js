@@ -1,9 +1,16 @@
 const fetch = require('node-fetch')
 
 const handler = async function (event) {
-  const query = event.queryStringParameters.query;
+  const params = event.queryStringParameters
+  const query = params.query
+  const lat = params.lat
+  const lon = params.lon
+  const radius = params.radius
+  const max = params.max
+  const offset = params.offset
+
   try {
-  const response = await fetch(`https://api.politie.nl/v4/gezocht?language=nl&lat=53.1511173&lon=6.756634599999984&radius=5.0&maxnumberofitems=10&offset=0`, {
+  const response = await fetch(`https://api.politie.nl/v4/gezocht?language=nl&lat=${lat}&lon=${lon}&radius=${radius}&maxnumberofitems=${max}&offset=${offset}`, {
       headers: { Accept: 'application/json' },
     })
     if (!response.ok) {
@@ -18,7 +25,7 @@ const handler = async function (event) {
     }
   } catch (error) {
     // output to netlify function log
-    console.log(error)
+
     return {
       statusCode: 500,
       // Could be a custom message or object i.e. JSON.stringify(err)

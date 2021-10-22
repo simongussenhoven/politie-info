@@ -4,6 +4,7 @@ import {BrowserRouter as Router, Route} from 'react-router-dom'
 import TopMenu from './TopMenu'
 import News from './News'
 import Wanted from './Wanted'
+import About from './About'
 
 
 
@@ -18,7 +19,7 @@ function App() {
       
           <Route exact path="/" component={News}/>
           <Route path="/gezochte-personen/" component={Wanted}/>
-
+          <Route path="/over-deze-pagina/" component={About}/>
       </Router>
     </div>
   )

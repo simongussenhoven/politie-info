@@ -24,16 +24,19 @@ export default function News() {
     const handleSearch = (event) => {
         event.preventDefault();
         setQuery(event.target.search.value)
+        setPage(0)
     }
 
     //set state when changing date
     const changeDate = (e, type) => {
         type === "from" ? setFromDate(e.target.value) : setToDate(e.target.value)
+        setPage(0)
     }
 
     //handle maximum amount of items
     const handleMaxNum = (e) => {
         setMaxNumberofItems(e.target.value)
+        setPage(0)
     }
 
     //change page
@@ -82,6 +85,9 @@ export default function News() {
                         setNews([...result.data.nieuwsberichten])
                         result.data.iterator.last ? setLast(true) : setLast(false)
                     }
+                    else {
+                        setNews([])
+                    }
                 })
                 .then(setLoading(false))
         }
@@ -106,7 +112,7 @@ export default function News() {
                 </form>
 
                 {/* Page title */}
-                <section>
+                <section className="text-center">
                     <h2 className="mx-5 px-5 pt-3">Nieuwsberichten voor zoekterm "{query}"</h2>
                     <p className="mx-5 px-5">Van {fromDate.split("-").reverse().join("-")} tot {toDate.split("-").reverse().join("-")}</p>
                 </section>
@@ -114,7 +120,7 @@ export default function News() {
                 {/* Page navigation */}
                 <section className="text-center">
                     {console.log(news)}
-                    <p>{page > 0 ? <span className="pagenav" onClick={() => handlePage(0)}>Vorige pagina</span> : ""} <span> {page > 0 && last == false ? <span>|</span> : ""} </span>{last ? "" : <span className="pagenav" onClick={() => handlePage(1)}>Volgende pagina</span>}</p>
+                    <p>{page > 0 ? <span className="pagenav" onClick={() => handlePage(0)}>Vorige pagina</span> : ""} <span> {page > 0 && last === false ? <span>|</span> : ""} </span>{last ? "" : <span className="pagenav" onClick={() => handlePage(1)}>Volgende pagina</span>}</p>
                 </section>
 
                 {/*Field for rendering items */}

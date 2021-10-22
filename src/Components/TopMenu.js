@@ -1,4 +1,4 @@
-import {Navbar, NavDropdown, Container, Nav} from "react-bootstrap"
+import {Navbar, Container} from "react-bootstrap"
 import {Link} from 'react-router-dom'
 import {NavLink} from "react-bootstrap"
 export default function TopMenu () {
@@ -29,6 +29,7 @@ export default function TopMenu () {
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <NavLink as={Link} to="/">Home</NavLink>
                 <NavLink as={Link} to="/gezochte-personen/">Gezochte personen</NavLink>
+                <NavLink as={Link} to="/over-deze-pagina/">Over deze pagina</NavLink>
                 </Container>
             </Navbar>
         </section>
