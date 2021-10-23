@@ -12,7 +12,7 @@ import About from './About'
 function App() {
   
   return (
-    <div className="app">
+    <div className="app border">
       <Header/>
       <Router>
       <TopMenu/>

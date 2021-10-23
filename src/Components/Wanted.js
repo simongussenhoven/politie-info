@@ -1,6 +1,9 @@
 import cities from '../data/cities/cities.js'
 import { useState, useEffect } from 'react'
 import placeholder from '../images/politie-placeholder.png'
+import { Modal } from 'react-bootstrap'
+import uuid from 'react-uuid'
+import SimpleImageSlider from "react-simple-image-slider";
 
 export default function Wanted() {
 
@@ -15,6 +18,23 @@ export default function Wanted() {
     const [max, setMax] = useState(10)
     const [page, setPage] = useState(0)
     const [last, setLast] = useState(false)
+    const [show, setShow] = useState(false);
+    const [modalData, setModalData] = useState({
+        titel: "Placeholder",
+        alineas: [
+            { "opgemaaktetekst": "Placeholder" }
+        ],
+        meerafbeeldingen: [placeholder, placeholder]
+    })
+
+    //showing and hiding the modal
+    const handleClose = () => setShow(false);
+    const handleShow = (item) => {
+        
+        console.log(item)
+        setModalData(item)
+        setShow(true)
+    }
 
     //handler for the submitfield in the form
     const handleSubmit = (e) => {
@@ -61,15 +81,15 @@ export default function Wanted() {
     const generateData = () => {
         if (wanted.length !== 0) {
             return (
-                wanted.map(person => {
+                wanted.map(item => {
                     return (
-                        <div className="card col-12 col-md-3 my-1 mx-md-2 shadow d-flex flex-column" key={person.uid}>
-                            <img src={person.afbeeldingen !== null && person.afbeeldingen.length > 0 ? person.afbeeldingen[0].url : placeholder} className="news-image"></img>
+                        <div className="card col-12 col-md-3 my-1 mx-md-2 shadow d-flex flex-column" key={item.uid}>
+                            <img src={item.afbeeldingen !== null && item.afbeeldingen.length > 0 ? item.afbeeldingen[0].url : placeholder} className="news-image"></img>
                             <div className="card-body mb-auto">
-                                <span className="w-100"><small><strong>{person.titel}</strong></small></span><br />
-                                <span className="card-title"><small>{person.publicatiedatum}</small></span><br />
+                                <span className="w-100"><small><strong>{item.titel}</strong></small></span><br />
+                                <span className="card-title"><small>{item.publicatiedatum}</small></span><br />
                             </div>
-                            <a href={person.url} className="btn btn-primary m-2" target="_blank" rel="noreferrer">Lees meer</a>
+                            <button onClick={() => handleShow(item)} className="btn btn-primary m-2" target="_blank" rel="noreferrer">Lees meer</button>
                         </div>
                     )
                 })
@@ -84,11 +104,11 @@ export default function Wanted() {
 
     //generate pagination
     const getPagination = () => {
-        if (wanted.length > 0){
-            return(
-                <section className="text-center">
+        if (wanted.length > 0) {
+            return (
+                <section className="text-center" multiple={true}>
                     <p>{page > 0 ? <span className="pagenav" onClick={() => handlePage(0)}>Vorige pagina</span> : ""} <span> {page > 0 && last === false ? <span>|</span> : ""} </span>{last ? "" : <span className="pagenav" onClick={() => handlePage(1)}>Volgende pagina</span>}</p>
-                </section> 
+                </section>
             )
         }
     }
@@ -96,7 +116,7 @@ export default function Wanted() {
     //call api when state values change, defined in callback
     useEffect(() => {
         const getWanted = () => {
-            fetch(`/.netlify/functions/politie-wanted?query=${query}&lat=${lat}&lon=${lng}&radius=${radius}&max=${max}&offset=${max*page}`)
+            fetch(`/.netlify/functions/politie-wanted?query=${query}&lat=${lat}&lon=${lng}&radius=${radius}&max=${max}&offset=${max * page}`)
                 .then((x) => x.json())
                 .then(result => {
                     if (result.data !== undefined) {
@@ -112,46 +132,69 @@ export default function Wanted() {
     }, [lat, radius, query, page, max])
 
     return (
-        <div className="container">
-            {/*Form*/}
-            <section className="mb-5">
-                <form className="d-flex justify-content-center" onSubmit={handleSubmit}>
-                    <input type="text" name="query" className="mx-1" />
-                    <select onChange={handleCity} className="mx-1">
-                        {sortedCities.map(city => {
-                            return (
-                                <option value={`${city.city} ${city.lat} ${city.lng}`}>{city.city}</option>
-                            )
-                        })}
-                    </select>
-                    <select onChange={handleRadius} value={radius} className="mx-1">
-                        <option value="0.5">500m</option>
-                        <option value="2.0">2km</option>
-                        <option value="5.0">5km</option>
-                        <option value="10.0">10km</option>
-                        <option value="25.0">25km</option>
-                    </select>
-                    <select value={max} onChange={handleMax}>
-                        <option value="10">10 berichten</option>
-                        <option value="25">25 berichten</option>
-                    </select>
-                    <input type="submit" value="Zoeken" className="mx-1"></input>
-                </form>
-            </section>
+        <>
+            <Modal
+                show={show}
+                size="lg"
+                onHide={() => setShow(false)}
+                dialogClassName="width-90"
+                aria-labelledby="example-custom-modal-styling-title"
+                animation="true"
+                scrollable="true"
+            >
 
-            {/*Page selector*/}
-            {getPagination()}
+                <Modal.Header closeButton>
+                    
+                    <Modal.Title id="example-custom-modal-styling-title">
+                        {modalData.titel}
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <img src={modalData.afbeeldingen[0].url} className="img-fluid w-100"/>
+                    <p className="my-3"><strong>{modalData.introductie}</strong></p>
+                    <div dangerouslySetInnerHTML={{__html: modalData.omschrijving}} key={uuid()}/>
+                </Modal.Body>
+            </Modal>
+            <div className="container">
+                {/*Form*/}
+                <section className="mb-5">
+                    <form className="d-flex justify-content-center" onSubmit={handleSubmit}>
+                        <input type="text" name="query" className="mx-1" />
+                        <select onChange={handleCity} className="mx-1">
+                            {sortedCities.map(city => {
+                                return (
+                                    <option value={`${city.city} ${city.lat} ${city.lng}`}>{city.city}</option>
+                                )
+                            })}
+                        </select>
+                        <select onChange={handleRadius} value={radius} className="mx-1">
+                            <option value="0.5">500m</option>
+                            <option value="2.0">2km</option>
+                            <option value="5.0">5km</option>
+                            <option value="10.0">10km</option>
+                            <option value="25.0">25km</option>
+                        </select>
+                        <select value={max} onChange={handleMax}>
+                            <option value="10">10 berichten</option>
+                            <option value="25">25 berichten</option>
+                        </select>
+                        <input type="submit" value="Zoeken" className="mx-1"></input>
+                    </form>
+                </section>
 
-            {/*Render content*/}
-            <section id="news">
-                <div className="cardgroup d-flex justify-content-center flex-row py-4 flex-wrap">
-                    {console.log(wanted)}
-                    {generateData()}
-                </div>
-            </section>
+                {/*Page selector*/}
+                {getPagination()}
 
-            {/*Page selector*/}
-            {getPagination()}
-        </div>
+                {/*Render content*/}
+                <section id="news">
+                    <div className="cardgroup d-flex justify-content-center flex-row py-4 flex-wrap">
+                        {generateData()}
+                    </div>
+                </section>
+
+                {/*Page selector*/}
+                {getPagination()}
+            </div>
+        </>
     )
 }

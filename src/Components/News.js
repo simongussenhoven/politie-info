@@ -1,7 +1,8 @@
 import Loading from './Loading'
 import placeholder from '../images/politie-placeholder.png'
 import React, { useState, useEffect, createRef } from 'react'
-import { Modal, Button, ModalDialog } from 'react-bootstrap'
+import { Modal } from 'react-bootstrap'
+import uuid from 'react-uuid'
 
 export default function News() {
 
@@ -11,13 +12,14 @@ export default function News() {
     const formatDate = (date) => {
         return date.toISOString().split("T")[0]
     }
-
+    
+    //define state in hooks
     const [isLoading, setLoading] = useState(true)
     const [query, setQuery] = useState('Amsterdam')
     const [news, setNews] = useState([])
     const [fromDate, setFromDate] = useState(formatDate(lastWeek))
     const [toDate, setToDate] = useState(formatDate(today))
-    const [maxNumberofItems, setMaxNumberofItems] = useState([10])
+    const [maxNumberofItems, setMaxNumberofItems] = useState(10)
     const [page, setPage] = useState(0)
     const [last, setLast] = useState(false)
     const [show, setShow] = useState(false);
@@ -31,6 +33,8 @@ export default function News() {
     //showing and hiding the modal
     const handleClose = () => setShow(false);
     const handleShow = (item) => {
+        item.alleafbeeldingen = item.afbeeldingen.concat(item.meerafbeeldingen)
+        console.log(item)
         setModalData(item)
         setShow(true)
     }
@@ -73,7 +77,7 @@ export default function News() {
         if (news.length !== 0) {
             return news.map(item => {
                 return (
-                    <div className="card col-12 col-md-2 col-lg-2 my-1 mx-md-2 shadow d-flex flex-column" key={item.uid}>
+                    <div className="card col-12 col-md-3 col-lg-2 my-1 mx-md-2 shadow d-flex flex-column" key={item.uid}>
                         <img onClick={() => { handleShow(item) }} className="card-img-top w-100 news-image" src={item.afbeelding.url !== "" ? item.afbeelding.url : placeholder} alt={item.uid} />
                         <div className="card-body mb-auto">
                             <span className="w-100"><small><strong>{item.gebied}</strong></small></span><br />
@@ -136,7 +140,7 @@ export default function News() {
                     <Modal.Body>
                         {modalData.alineas.map(item => {
                            return(
-                            <div dangerouslySetInnerHTML={{__html: item.opgemaaktetekst}} />
+                            <div dangerouslySetInnerHTML={{__html: item.opgemaaktetekst}} key={uuid()}/>
                            )
                         })}
                     </Modal.Body>
@@ -173,8 +177,6 @@ export default function News() {
                             {generateItems()}
                         </div>
                     </section>
-
-
                 </div>
             </>
         )
