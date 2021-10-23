@@ -24,6 +24,7 @@ export default function Wanted() {
         alineas: [
             { "opgemaaktetekst": "Placeholder" }
         ],
+        afbeeldingen: [placeholder, placeholder],
         meerafbeeldingen: [placeholder, placeholder]
     })
 

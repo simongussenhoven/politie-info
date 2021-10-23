@@ -33,7 +33,7 @@ export default function News() {
     //showing and hiding the modal
     const handleClose = () => setShow(false);
     const handleShow = (item) => {
-        item.alleafbeeldingen = item.afbeeldingen.concat(item.meerafbeeldingen)
+        
         console.log(item)
         setModalData(item)
         setShow(true)
