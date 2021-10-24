@@ -27,7 +27,20 @@ export default function Wanted() {
         afbeeldingen: [placeholder, placeholder],
         meerafbeeldingen: [placeholder, placeholder]
     })
+    const [picNav, setPicNav] = useState(0)
 
+    const handlePicNav = () => {
+        const allImg = modalData.afbeeldingen.concat(modalData.meerafbeeldingen)
+        console.log(allImg)
+        let num = picNav
+        if (picNav < allImg.length -1){
+            setPicNav(num += 1)
+        }
+        else {
+            setPicNav(0)
+        }
+        console.log(picNav)
+    }
     //showing and hiding the modal
     const handleClose = () => setShow(false);
     const handleShow = (item) => {
@@ -151,8 +164,16 @@ export default function Wanted() {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <img src={modalData.afbeeldingen[0].url} className="img-fluid w-100"/>
-                    <p className="my-3"><strong>{modalData.introductie}</strong></p>
+                    <div className="d-flex">
+                        <div className="row">
+                            <div className="col-12 col-md-6">
+                                <p className="my-3"><strong>{modalData.introductie}</strong></p>
+                            </div>
+                            <div className="col-12 col-md-6">
+                            <img onClick={handlePicNav} src={modalData.afbeeldingen.concat(modalData.meerafbeeldingen).length > 0 ? modalData.afbeeldingen.concat(modalData.meerafbeeldingen)[picNav].url : placeholder} className="img-fluid w-100"/>
+                            </div>
+                        </div>
+                    </div>
                     <div dangerouslySetInnerHTML={{__html: modalData.omschrijving}} key={uuid()}/>
                 </Modal.Body>
             </Modal>
