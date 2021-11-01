@@ -5,8 +5,13 @@
     background-size: cover;
   }
   .news-image {
-    height: 200px !important;
+    min-height: 100%;
     object-fit:cover
+  }
+  .wanted-image {
+    height: 300px;
+    object-fit:cover;
+
   }
   .pagenav {
     text-decoration: underline;
@@ -20,4 +25,12 @@
 }
 .show {
   padding-left: 0px !important;
+}
+.pointer {
+  cursor: pointer;
+}
+.modal-image {
+
+  max-width: 100%;
+  object-fit: cover;
 }

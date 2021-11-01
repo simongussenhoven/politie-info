@@ -97,12 +97,13 @@ export default function Wanted() {
             return (
                 wanted.map(item => {
                     return (
-                        <div  onClick={() => handleShow(item)} className="card col-12 col-md-2 my-1 mx-md-2 shadow d-flex flex-column pointer" key={item.uid}>
-                            <img src={item.afbeeldingen !== null && item.afbeeldingen.length > 0 ? item.afbeeldingen[0].url : placeholder} className="wanted-image"></img>
+                        <div className="card col-12 col-md-3 my-1 mx-md-2 shadow d-flex flex-column" key={item.uid}>
+                            <img src={item.afbeeldingen !== null && item.afbeeldingen.length > 0 ? item.afbeeldingen[0].url : placeholder} className="news-image"></img>
                             <div className="card-body mb-auto">
                                 <span className="w-100"><small><strong>{item.titel}</strong></small></span><br />
                                 <span className="card-title"><small>{item.publicatiedatum}</small></span><br />
                             </div>
+                            <button onClick={() => handleShow(item)} className="btn btn-primary m-2" target="_blank" rel="noreferrer">Lees meer</button>
                         </div>
                     )
                 })
@@ -168,8 +169,8 @@ export default function Wanted() {
                             <div className="col-12 col-md-6">
                                 <p className="my-3"><strong>{modalData.introductie}</strong></p>
                             </div>
-                            <div className="col-12 col-md-6 text-center">
-                            <img onClick={handlePicNav} src={modalData.afbeeldingen.concat(modalData.meerafbeeldingen).length > 0  || modalData.afbeeldingen.concat(modalData.meerafbeeldingen).length === undefined ? modalData.afbeeldingen.concat(modalData.meerafbeeldingen)[picNav].url : placeholder} className="modal-image pointer"/>
+                            <div className="col-12 col-md-6">
+                            <img onClick={handlePicNav} src={modalData.afbeeldingen.concat(modalData.meerafbeeldingen).length > 0 ? modalData.afbeeldingen.concat(modalData.meerafbeeldingen)[picNav].url : placeholder} className="img-fluid w-100"/>
                             </div>
                         </div>
                     </div>

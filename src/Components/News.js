@@ -77,14 +77,15 @@ export default function News() {
         if (news.length !== 0) {
             return news.map(item => {
                 return (
-                    <div className="col-12 shadow d-flex border rounded mb-2" key={item.uid} onClick={() => { handleShow(item) }} >
-                        <div className="col-4">
-                        <img onClick={() => { handleShow(item) }} className="card-img-top w-100 news-image" src={item.afbeelding.url !== "" ? item.afbeelding.url : placeholder} alt={item.uid} />
+                    <div className="col-12 shadow d-flex border rounded mb-2 pointer" key={item.uid} onClick={() => { handleShow(item) }} >
+                        <div className="col-4 col-md-3">
+                            <img onClick={() => { handleShow(item) }} className="card-img-top w-100 news-image" src={item.afbeelding.url !== "" ? item.afbeelding.url : placeholder} alt={item.uid} />
                         </div>
                         <div className="card-body mb-auto">
-                            <span className="w-100"><small><strong>{item.gebied}</strong></small></span><br />
-                            <span className="card-title"><small>{item.publicatiedatum}</small></span><br />
-                            <span className="w-100" >{item.titel}</span>
+                            <h4 className="w-100" >{item.titel}</h4>
+                            <p>{item.publicatiedatum}</p>
+                            <p className="d-none d-md-block">{item.introductie}</p>
+
                         </div>
                     </div>
                 )
@@ -92,7 +93,12 @@ export default function News() {
         }
         else {
             console.log("No items found!")
-            return <h2>No items found</h2>
+            return (
+                <>
+                    <h3>Geen berichten gevonden</h3>
+                    <p>Pas je filter aan om meer berichten te tonen.</p>
+                </>
+            )
         }
     }
     //
@@ -138,16 +144,16 @@ export default function News() {
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
+                        <p><strong>{modalData.introductie}</strong></p>
                         {modalData.alineas.map(item => {
                             return (
                                 <>
-                                <p>{item.gebied}</p>
-                                <div dangerouslySetInnerHTML={{ __html: item.opgemaaktetekst }} key={uuid()} />
+                                    <div dangerouslySetInnerHTML={{ __html: item.opgemaaktetekst.replace("<a ", `<a href="target=_blank" rel="noreferrer"`) }} key={uuid()} />
                                 </>
                             )
                         })}
-                    {modalData.urltipformulier != null ? <a href={modalData.urltipformulier.replace("api", "www")} target="_blank" rel="noreferrer" className="btn btn-primary w-100">Naar het tipformulier</a> : ""}
-                    <button onClick={handleClose} className="btn outline-secondary w-100">Sluiten</button>
+                        {modalData.urltipformulier != null ? <a href={modalData.urltipformulier.replace("api", "www")} target="_blank" rel="noreferrer" className="btn btn-primary w-100">Naar het tipformulier</a> : ""}
+                        <button onClick={handleClose} className="btn btn-outline-secondary w-100 mt-1">Sluiten</button>
                     </Modal.Body>
                 </Modal>
                 <div className="container">
@@ -164,12 +170,18 @@ export default function News() {
                                 </section>
                             </section>
                         </div>
+
                         <div className="col-12 col-md-4">
-                        <h2>Filter berichten</h2>
-                        <p>Gebruik onderstaande velden om berichten te filteren.</p>
-                            <form className="d-flex flex-column flex-md-column justify-content-center my-3" onSubmit={handleSearch}>
-                                {isLoading ? <span>Loading</span> : ""}
-                                <input type="text" className="rounded mx-1 my-1" placeholder="Voer een zoekterm in" name="search" id="search" />
+                            <h2>Filter berichten</h2>
+                            <p>Gebruik onderstaande velden om berichten te filteren.</p>
+                            <form className="my-3" onSubmit={handleSearch}>
+                                <div className="row d-flex flex-column justify-content-center">
+                                    <div className="col-3 d-flex flex-row">
+                                        <span className="text-nowrap">Tot datum:</span>
+                                        <input type="text" className="rounded mx-1 my-1" placeholder="Voer een zoekterm in" name="search" id="search" />
+                                    </div>
+                                </div>
+
                                 <input type="date" className="rounded mx-1 my-1" name="fromdate" max={toDate} value={fromDate} onChange={(e) => { changeDate(e, "from") }} />
                                 <input type="date" className="rounded mx-1 my-1" name="todatedate" min={fromDate} value={toDate} max={formatDate(today)} onChange={(e) => { changeDate(e, "to") }} />
                                 <select value={maxNumberofItems} className="mx-1 my-1" onChange={handleMaxNum}>

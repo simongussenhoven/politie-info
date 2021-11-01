@@ -30,6 +30,7 @@ export default function TopMenu () {
                 <NavLink as={Link} to="/">Home</NavLink>
                 <NavLink as={Link} to="/gezochte-personen/">Gezochte personen</NavLink>
                 <NavLink as={Link} to="/over-deze-pagina/">Over deze pagina</NavLink>
+                <NavLink as={Link} to="/nationale-opsporingslijst/">Nationale opsporingslijst</NavLink>
                 </Container>
             </Navbar>
         </section>

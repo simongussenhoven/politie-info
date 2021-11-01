@@ -6,7 +6,13 @@
 }
 
 .news-image {
-  height: 200px !important;
+  min-height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.wanted-image {
+  height: 300px;
   -o-object-fit: cover;
      object-fit: cover;
 }
@@ -26,5 +32,15 @@
 
 .show {
   padding-left: 0px !important;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.modal-image {
+  max-width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 /*# sourceMappingURL=index.css.map */

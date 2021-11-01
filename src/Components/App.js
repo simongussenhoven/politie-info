@@ -5,6 +5,7 @@ import TopMenu from './TopMenu'
 import News from './News'
 import Wanted from './Wanted'
 import About from './About'
+import Apblist from './Apblist'
 
 
 
@@ -12,7 +13,7 @@ import About from './About'
 function App() {
   
   return (
-    <div className="app border">
+    <div className="app">
       <Header/>
       <Router>
       <TopMenu/>
@@ -20,6 +21,7 @@ function App() {
           <Route exact path="/" component={News}/>
           <Route path="/gezochte-personen/" component={Wanted}/>
           <Route path="/over-deze-pagina/" component={About}/>
+          <Route path="/nationale-opsporingslijst/" component={Apblist}/>
       </Router>
     </div>
   )
