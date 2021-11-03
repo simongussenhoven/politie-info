@@ -58,16 +58,10 @@ export default function News() {
         setPage(0)
     }
 
-    //change page
-    const handlePage = (e) => {
+    //change load more items
+    const loadMore = () => {
         let newPage = page
-        if (e === 1) {
-            newPage += 1
-        }
-        else {
-            newPage -= 1
-        }
-        setPage(newPage)
+        setPage(newPage += 1)
     }
     //dom parser since this api delivers formatted HTML
     const parser = new DOMParser()
@@ -111,7 +105,9 @@ export default function News() {
                 .then((x) => x.json())
                 .then(result => {
                     if (result.data !== undefined) {
-                        setNews([...result.data.nieuwsberichten]);
+                        const oldNews = [...news]
+                        const newNews = result.data.nieuwsberichten
+                        setNews(oldNews.concat(newNews));
                         setModalData(result.data.nieuwsberichten[0])
                         result.data.iterator.last ? setLast(true) : setLast(false);
                     }
@@ -156,6 +152,7 @@ export default function News() {
                         <button onClick={handleClose} className="btn btn-outline-secondary w-100 mt-1">Sluiten</button>
                     </Modal.Body>
                 </Modal>
+
                 <div className="container">
                     {/* Search bar with options */}
                     <div className="row d-flex flex-column-reverse flex-md-row">
@@ -168,6 +165,11 @@ export default function News() {
                                         {generateItems()}
                                     </div>
                                 </section>
+
+                                {/* Load more messages */}
+                                    <section className="text-center my-3">
+                                        <p className="underline" onClick={loadMore}>{!last ? "Laad meer" : ""}</p>
+                                    </section>
                             </section>
                         </div>
 
@@ -175,33 +177,57 @@ export default function News() {
                             <h2>Filter berichten</h2>
                             <p>Gebruik onderstaande velden om berichten te filteren.</p>
                             <form className="my-3" onSubmit={handleSearch}>
-                                <div className="row d-flex flex-column justify-content-center">
-                                    <div className="col-3 d-flex flex-row">
-                                        <span className="text-nowrap">Tot datum:</span>
-                                        <input type="text" className="rounded mx-1 my-1" placeholder="Voer een zoekterm in" name="search" id="search" />
+                                <div className="row d-flex flex-column flex-md-row justify-content-center">
+                                    <div className="col-12 col-md-4 mt-1">
+                                        <span className="text-nowrap">Zoekterm:</span>
+                                    </div>
+                                    <div className="col-12 col-md-8">
+                                        <input type="text" className="rounded w-100 mx-1 my-1" placeholder="Voer een zoekterm in" name="search" id="search" />
                                     </div>
                                 </div>
 
-                                <input type="date" className="rounded mx-1 my-1" name="fromdate" max={toDate} value={fromDate} onChange={(e) => { changeDate(e, "from") }} />
-                                <input type="date" className="rounded mx-1 my-1" name="todatedate" min={fromDate} value={toDate} max={formatDate(today)} onChange={(e) => { changeDate(e, "to") }} />
-                                <select value={maxNumberofItems} className="mx-1 my-1" onChange={handleMaxNum}>
-                                    <option value="10">10 berichten</option>
-                                    <option value="25">25 berichten</option>
-                                </select>
-                                <input type="submit" value="Zoeken" className="mx-1 my-1" />
+                                <div className="row d-flex flex-column flex-md-row justify-content-center">
+                                    <div className="col-12 col-md-4">
+                                        <span className="text-nowrap">Vanaf datum:</span>
+                                    </div>
+                                    <div className="col-12 col-md-8">
+                                        <input type="date" className="rounded mx-1 my-1 w-100" name="fromdate" max={toDate} value={fromDate} onChange={(e) => { changeDate(e, "from") }} />
+                                    </div>
+                                </div>
+
+                                <div className="row d-flex flex-column flex-md-row justify-content-center">
+                                    <div className="col-12 col-md-4">
+                                        <span className="text-nowrap">Tot datum:</span>
+                                    </div>
+                                    <div className="col-12 col-md-8">
+                                    <input type="date" className="rounded mx-1 my-1 w-100" name="todatedate" min={fromDate} value={toDate} max={formatDate(today)} onChange={(e) => { changeDate(e, "to") }} />
+                                    </div>
+                                </div>
+
+
+                                <div className="row d-flex flex-column flex-md-row justify-content-center">
+                                    <div className="col-12 col-md-4">
+                                        <span className="text-nowrap">Aantal berichten</span>
+                                    </div>
+                                    <div className="col-12 col-md-8">
+                                    <select value={maxNumberofItems} className="mx-1 my-1 w-100" onChange={handleMaxNum}>
+                                        <option value="10">10 berichten</option>
+                                        <option value="25">25 berichten</option>
+                                    </select>
+                                    </div>
+                                </div>
+
+                                <div className="row d-flex flex-column flex-md-row justify-content-center d-none">
+                                    <div className="row d-flex flex-column flex-md-row justify-content-center">
+                                        <input type="submit" value="Zoeken" className="mx-1 my-1" />
+                                    </div>
+                                </div>
+
                             </form>
                         </div>
                     </div>
 
-                    {/* Page title */}
-
-
-                    {/* Page navigation */}
-                    <section className="text-center my-3">
-                        <p>{!last ? "Laad meer" : ""}</p>
-                    </section>
-
-                    {/*Field for rendering items */}
+                    
 
                 </div>
             </>

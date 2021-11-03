@@ -28,9 +28,9 @@ export default function TopMenu () {
                 </Navbar.Collapse> */}
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <NavLink as={Link} to="/">Home</NavLink>
-                <NavLink as={Link} to="/gezochte-personen/">Gezochte personen</NavLink>
-                <NavLink as={Link} to="/over-deze-pagina/">Over deze pagina</NavLink>
+                <NavLink as={Link} to="/gezochte-personen/">Gezochte personen</NavLink>    
                 <NavLink as={Link} to="/nationale-opsporingslijst/">Nationale opsporingslijst</NavLink>
+                <NavLink as={Link} to="/over-deze-pagina/">Over deze pagina</NavLink>
                 </Container>
             </Navbar>
         </section>
